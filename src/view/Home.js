@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import {Typography, Button, TextField, Divider, Grid} from '@material-ui/core/';
+import {Typography, Button, TextField, Divider, Grid, Snackbar} from '@material-ui/core/';
 import React, { Component } from 'react';
 import {SEED_API_URL} from '../constants';
 
@@ -7,33 +7,39 @@ import Article from "../components/Article";
 
 const styleSheet = {
   button: {
-    textTransform: "none", 
-    // borderRight: "1px "+muiTheme.palette.primary1Color, borderBottom: "1px "+muiTheme.palette.primary1Color, 
-    // borderRadius: 0, 
-    // borderStyle: "inset", height: "100%", fontSize: 18, whiteSpace: "nowrap", minWidth: "fit-content",
-    // backgroundColor: '',
+    textTransform: "none",
     color: "#fff",
-    // width: "250px",
     width: "300px",
   },
   yellowButton:{
     backgroundColor: "#D6B656",
+    '&:hover': {
+      backgroundColor: "#D6B656",
+    }
   },
   blueButton:{
     backgroundColor: "#0057D8",
     marginTop: "10px",
     marginBottom: "10px",
+    '&:hover': {
+      backgroundColor: "#0057D8",
+    }
   },
   redButton:{
     backgroundColor: "#FF6666",
-    marginBottom: "50px",
+    marginBottom: "68px",
+    '&:hover': {
+      backgroundColor: "#FF6666",
+    }
   },
   greenButton:{
     backgroundColor: "#82B366",
+    '&:hover': {
+      backgroundColor: "#82B366",
+    }
   },
   textField:{
     marginBottom: "10px",
-    // width: "250px",
     width: "300px",
     backgroundColor: "#E9ECEF",
   },
@@ -59,6 +65,8 @@ class Home extends Component {
       updateArticleBody : "",
       searchArticleTitle : "",
       searchArticles: [],
+      snackMessage: "",
+      openSnack: "",
     }
   }
 
@@ -68,8 +76,11 @@ class Home extends Component {
   }
 
   handleChangeSearchArticleTitle(value){
-    this.state.searchArticleTitle = value;
-    this.setState(this.state);
+    this.setState({searchArticleTitle: value});
+  }
+
+  onCloseSnack() {
+    this.setState({openSnack: false});
   }
 
   changeArticle(){
@@ -79,10 +90,14 @@ class Home extends Component {
       body: JSON.stringify({title: this.state.updateArticleTitle, body: this.state.updateArticleBody})
     }).then((res)=>{
       console.log(res);
-      // this.state.searchArticles = [];
-      // this.setState(this.state);
+      if(res.status === 200){
+        this.setState({openSnack: true, snackMessage: "Success"});
+      } else {
+        this.setState({openSnack: true, snackMessage: "Error"});
+      }
     }).catch((e)=>{
       console.log(e);
+      this.setState({openSnack: true, snackMessage: "Error"});
     });
   }
 
@@ -92,30 +107,56 @@ class Home extends Component {
       headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((resp)=>{
       resp.json().then((body)=>{
-        if(resp.status == 201){
-          this.state.searchArticles = body;
-          this.setState(this.state);
+        if(resp.status === 201){
+          this.setState({searchArticles: body, openSnack: true, snackMessage: "Success"});
         } else{
           console.log(body);
+          this.setState({openSnack: true, snackMessage: "Error"});
         }
       }).catch((e)=>{
         console.log(e);
+        this.setState({openSnack: true, snackMessage: "Error"});
       });
     }).catch((e)=>{
       console.log(e);
+      this.setState({openSnack: true, snackMessage: "Error"});
     });
   }
-  //TODO Snackbar event
+
   deleteAll(){
     fetch(SEED_API_URL + "articles/all", {
       method: "DELETE", 
       headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((res)=>{
       console.log(res);
-      this.state.searchArticles = [];
-      this.setState(this.state);
+      this.setState({searchArticles: [], openSnack: true, snackMessage: "Success"});
     }).catch((e)=>{
       console.log(e);
+      this.setState({openSnack: true, snackMessage: "Error"});
+    });
+  }
+
+  searchArticle(){
+    fetch(SEED_API_URL + "getArticle?title=" + `${this.state.searchArticleTitle}`, {
+      method: "GET", 
+      headers: {"Content-Type": "application/json; charset=utf-8"}
+    }).then((res)=>{
+      if(res.status === 200){
+        res.json().then((articles)=>{
+          if(typeof articles == "object"){
+            articles = [articles];
+          }
+          this.setState({searchArticles: articles, openSnack: true, snackMessage: "Success"});
+        }).catch((e)=>{
+          console.log(e);
+          this.setState({openSnack: true, snackMessage: "Error"});
+        });
+      } else {
+        this.setState({openSnack: true, snackMessage: "Error"});
+      }
+    }).catch((e)=>{
+      console.log(e);
+      this.setState({openSnack: true, snackMessage: "Error"});
     });
   }
 
@@ -138,7 +179,7 @@ class Home extends Component {
             <div>
               <TextField
                 value={this.state.updateArticleId}
-                label={this.state.updateArticleId ? "" : "Article Id"}
+                label={"Article Id"}
                 InputLabelProps={{shrink: false}}
                 onChange={(evt) => this.handleChangeUpdateArticle("updateArticleId", evt.target.value)}
                 variant="outlined"
@@ -159,7 +200,7 @@ class Home extends Component {
             <div>
               <TextField
                 value={this.state.updateArticleTitle}
-                label={this.state.updateArticleTitle ? "" : "Title"}
+                label={"Title"}
                 InputLabelProps={{shrink: false}}
                 onChange={(evt) => this.handleChangeUpdateArticle("updateArticleTitle", evt.target.value)}
                 variant="outlined"
@@ -180,7 +221,7 @@ class Home extends Component {
             <div>
               <TextField
                 value={this.state.updateArticleBody}
-                label={this.state.updateArticleBody ? "" : "Body"}
+                label={"Body"}
                 InputLabelProps={{shrink: false}}
                 onChange={(evt) => this.handleChangeUpdateArticle("updateArticleBody", evt.target.value)}
                 variant="outlined"
@@ -213,9 +254,7 @@ class Home extends Component {
               <Divider orientation={"horizontal"} className={classes.verticalDivider}/>
             }
           </Grid>
-          <Grid item xs={12} sm={5} style={{textAlign: "center",
-          //  marginTop: window.innerWidth > 500 ? "10px" : "40px"
-          }} id="Article-menu">
+          <Grid item xs={12} sm={5} style={{textAlign: "center"}} id="Article-menu">
             <div>
               <Button 
                 className={[classes.button, classes.blueButton].join(" ")} 
@@ -237,7 +276,7 @@ class Home extends Component {
             <div>
               <TextField
                 value={this.state.searchArticleTitle}
-                label={this.state.searchArticleTitle ? "" : "Search by Article Title..."}
+                label={"Search by Article Title..."}
                 InputLabelProps={{shrink: false}}
                 onChange={(evt) => this.handleChangeSearchArticleTitle(evt.target.value)}
                 variant="outlined"
@@ -255,7 +294,13 @@ class Home extends Component {
                 }}
               />
             </div>
-            <Button className={[classes.button, classes.greenButton].join(" ")} size="small">Search</Button>
+            <Button 
+              className={[classes.button, classes.greenButton].join(" ")} 
+              size="small"
+              onClick={this.searchArticle.bind(this)}
+            >
+              Search
+            </Button>
           </Grid>
         </Grid>
         <Divider className={classes.verticalDivider}/>
@@ -264,9 +309,9 @@ class Home extends Component {
           { this.state.searchArticles && this.state.searchArticles.length > 0 ?
             <Grid container>
               { 
-                this.state.searchArticles.map((article)=>{
+                this.state.searchArticles.map((article, i)=>{
                   return(
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={6} key={i}>
                       <Article title={article.title} body={article.body}></Article>
                     </Grid>
                   )
@@ -277,7 +322,13 @@ class Home extends Component {
             ""
           }
         </div>
-
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={this.state.openSnack}
+          onClose={this.onCloseSnack.bind(this)}
+          autoHideDuration={1000}
+          message={<span>{this.state.snackMessage}</span>}
+        />
       </div>
     );
   }
