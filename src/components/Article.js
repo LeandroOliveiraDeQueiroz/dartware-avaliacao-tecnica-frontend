@@ -21,11 +21,6 @@ class Article extends Component {
   constructor(props, context){
     super(context);
     this.props = props;
-
-    this.state = {
-      title : props.title,
-      body : props.body,
-    }
   }
 
   render(){
@@ -33,8 +28,8 @@ class Article extends Component {
     return(
       <Card variant="outlined" className={classes.articleCard}>
         <CardContent>
-          <Typography variant="h6" className={classes.articleTitle}>{this.state.title}</Typography>
-          <Typography variant="body2" component="p">{this.state.body}</Typography>
+          <Typography variant="h6" className={classes.articleTitle}>{this.props.title}</Typography>
+          <Typography variant="body2" component="p">{this.props.body}</Typography>
         </CardContent>
       </Card>
     );
