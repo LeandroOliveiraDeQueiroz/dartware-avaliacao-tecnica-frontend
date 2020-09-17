@@ -66,13 +66,12 @@ class Home extends Component {
       searchArticleTitle : "",
       searchArticles: [],
       snackMessage: "",
-      openSnack: "",
+      openSnack: false,
     }
   }
 
   handleChangeUpdateArticle(field, value){
-    this.state[field] = value;
-    this.setState(this.state);
+    this.setState({[field]: value});
   }
 
   handleChangeSearchArticleTitle(value){
@@ -137,15 +136,12 @@ class Home extends Component {
   }
 
   searchArticle(){
-    fetch(SEED_API_URL + "getArticle?title=" + `${this.state.searchArticleTitle}`, {
+    fetch(SEED_API_URL + "getArticle?title=" + this.state.searchArticleTitle, {
       method: "GET", 
       headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((res)=>{
       if(res.status === 200){
         res.json().then((articles)=>{
-          if(typeof articles == "object"){
-            articles = [articles];
-          }
           this.setState({searchArticles: articles, openSnack: true, snackMessage: "Success"});
         }).catch((e)=>{
           console.log(e);
@@ -178,65 +174,38 @@ class Home extends Component {
             <Typography variant="h5" style={{marginBottom: "20px", fontWeight: "bold"}}>Update Article</Typography>
             <div>
               <TextField
-                value={this.state.updateArticleId}
                 label={"Article Id"}
-                InputLabelProps={{shrink: false}}
+                InputLabelProps={{classes: {root: classes.textFieldFont}}}
+                value={this.state.updateArticleId}
+                InputProps={{classes: { input: classes.textFieldFont}}}
                 onChange={(evt) => this.handleChangeUpdateArticle("updateArticleId", evt.target.value)}
                 variant="outlined"
                 className={classes.textField}
                 size="small"
-                InputProps={{
-                  classes: {
-                    input: classes.textFieldFont,
-                  },
-                }}
-                InputLabelProps={{
-                  classes: {
-                    root: classes.textFieldFont,
-                  },
-                }}
               />
             </div>
             <div>
               <TextField
-                value={this.state.updateArticleTitle}
                 label={"Title"}
-                InputLabelProps={{shrink: false}}
+                InputLabelProps={{classes: {root: classes.textFieldFont}}}
+                value={this.state.updateArticleTitle}
+                InputProps={{classes: { input: classes.textFieldFont}}}
                 onChange={(evt) => this.handleChangeUpdateArticle("updateArticleTitle", evt.target.value)}
                 variant="outlined"
                 className={classes.textField}
                 size="small"
-                InputProps={{
-                  classes: {
-                    input: classes.textFieldFont,
-                  },
-                }}
-                InputLabelProps={{
-                  classes: {
-                    root: classes.textFieldFont,
-                  },
-                }}
               />
             </div>
             <div>
               <TextField
-                value={this.state.updateArticleBody}
                 label={"Body"}
-                InputLabelProps={{shrink: false}}
+                InputLabelProps={{classes: {root: classes.textFieldFont}}}
+                value={this.state.updateArticleBody}
+                InputProps={{classes: { input: classes.textFieldFont}}}
                 onChange={(evt) => this.handleChangeUpdateArticle("updateArticleBody", evt.target.value)}
                 variant="outlined"
                 className={classes.textField}
                 size="small"
-                InputProps={{
-                  classes: {
-                    input: classes.textFieldFont,
-                  },
-                }}
-                InputLabelProps={{
-                  classes: {
-                    root: classes.textFieldFont,
-                  },
-                }}
               />
             </div>
             <Button 
@@ -275,23 +244,14 @@ class Home extends Component {
             </div>
             <div>
               <TextField
-                value={this.state.searchArticleTitle}
                 label={"Search by Article Title..."}
-                InputLabelProps={{shrink: false}}
+                InputLabelProps={{classes: {root: classes.textFieldFont}}}
+                value={this.state.searchArticleTitle}
+                InputProps={{classes: { input: classes.textFieldFont}}}
                 onChange={(evt) => this.handleChangeSearchArticleTitle(evt.target.value)}
                 variant="outlined"
                 className={classes.textField}
                 size="small"
-                InputProps={{
-                  classes: {
-                    input: classes.textFieldFont,
-                  },
-                }}
-                InputLabelProps={{
-                  classes: {
-                    root: classes.textFieldFont,
-                  },
-                }}
               />
             </div>
             <Button 
