@@ -326,7 +326,7 @@ class Home extends Component {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           open={this.state.openSnack}
           onClose={this.onCloseSnack.bind(this)}
-          autoHideDuration={1000}
+          autoHideDuration={500}
           message={<span>{this.state.snackMessage}</span>}
         />
       </div>
