@@ -148,7 +148,7 @@ class Home extends Component {
           this.setState({openSnack: true, snackMessage: "Error"});
         });
       } else {
-        this.setState({openSnack: true, snackMessage: "Error"});
+        this.setState({searchArticles: [], openSnack: true, snackMessage: "Not found"});
       }
     }).catch((e)=>{
       console.log(e);
