@@ -6,7 +6,8 @@ const styleSheet = {
   articleCard: {
     backgroundColor: "#F5F5F5", 
     marginTop: "20px!important", 
-    width: "300px", 
+    width: "95%",
+    maxWidth: "300px",
     margin: "auto", 
     textAlign: "center", 
     borderRadius: 16

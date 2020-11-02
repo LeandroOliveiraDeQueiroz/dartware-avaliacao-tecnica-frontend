@@ -9,7 +9,8 @@ const styleSheet = {
   button: {
     textTransform: "none",
     color: "#fff",
-    width: "300px",
+    width: "100%",
+    maxWidth: "300px",
   },
   yellowButton:{
     backgroundColor: "#D6B656",
@@ -40,10 +41,11 @@ const styleSheet = {
   },
   textField:{
     marginBottom: "10px",
-    width: "300px",
+    width: "100%",
+    maxWidth: "300px",
     backgroundColor: "#E9ECEF",
   },
-  verticalDivider:{
+  horizontalDivider:{
     marginTop: "20px", 
     marginBottom: "20px",
     height: "2px",
@@ -51,6 +53,11 @@ const styleSheet = {
   },
   textFieldFont:{
     fontSize: "15px"
+  },
+  verticalDivider:{
+    margin: "auto", 
+    width: "2px", 
+    backgroundColor: "#BDBDBD"
   },
 };
 
@@ -217,11 +224,8 @@ class Home extends Component {
             </Button>
           </Grid>
           <Grid item xs={12} sm={2}>
-            { window.innerWidth >= 600 ?
-              <Divider orientation={"vertical"} style={{margin: "auto", width: "2px", backgroundColor: "#BDBDBD"}}/>
-            :
-              <Divider orientation={"horizontal"} className={classes.verticalDivider}/>
-            }
+            <Divider orientation={window.innerWidth >= 600 ? "vertical" : "horizontal"} 
+            className={window.innerWidth >= 600 ? classes.verticalDivider : classes.horizontalDivider}/>
           </Grid>
           <Grid item xs={12} sm={5} style={{textAlign: "center"}} id="Article-menu">
             <div>
@@ -263,7 +267,7 @@ class Home extends Component {
             </Button>
           </Grid>
         </Grid>
-        <Divider className={classes.verticalDivider}/>
+        <Divider className={classes.horizontalDivider}/>
         <div id="Article-search">
           <Typography style={{textAlign: "center", fontWeight: "bold"}} variant="h5">Search Results</Typography>
           { this.state.searchArticles && this.state.searchArticles.length > 0 ?
