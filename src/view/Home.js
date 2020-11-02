@@ -10,6 +10,7 @@ const styleSheet = {
     textTransform: "none",
     color: "#fff",
     width: "100%",
+    maxWidth: "300px",
   },
   yellowButton:{
     backgroundColor: "#D6B656",
@@ -41,6 +42,7 @@ const styleSheet = {
   textField:{
     marginBottom: "10px",
     width: "100%",
+    maxWidth: "300px",
     backgroundColor: "#E9ECEF",
   },
   horizontalDivider:{
