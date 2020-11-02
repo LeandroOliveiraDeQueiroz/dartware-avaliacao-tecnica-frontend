@@ -1,6 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
-import {Typography, Button, TextField, Divider, Grid, Snackbar} from '@material-ui/core/';
-import React, { Component } from 'react';
+import {Typography, Button, TextField, Divider, Grid, Snackbar, CircularProgress} from '@material-ui/core/';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import React, {useState, useEffect } from 'react';
 import {SEED_API_URL} from '../constants';
 
 import Article from "../components/Article";
@@ -10,6 +11,7 @@ const styleSheet = {
     textTransform: "none",
     color: "#fff",
     width: "100%",
+    maxWidth: "300px"
   },
   yellowButton:{
     backgroundColor: "#D6B656",
@@ -41,6 +43,7 @@ const styleSheet = {
   textField:{
     marginBottom: "10px",
     width: "100%",
+    maxWidth: "300px",
     backgroundColor: "#E9ECEF",
   },
   horizontalDivider:{
@@ -57,221 +60,244 @@ const styleSheet = {
     width: "2px", 
     backgroundColor: "#BDBDBD"
   },
+  loading:{
+    width: "10%",
+    marginTop: "30px",
+  }
 };
 
-class Home extends Component {
-  constructor(props, context){
-    super(context);
-    this.props = props;
+const Home = (props) => {
+  const [updateArticleId, setUpdateArticleId] = useState("");
+  const [updateArticleTitle, setUpdateArticleTitle] = useState("");
+  const [updateArticleBody, setUpdateArticleBody] = useState("");
+  const [searchArticleTitle, setSearchArticleTitle] = useState("");
+  const [articles, setArticles] = useState([]);
+  const [snackbar, setSnackbar] = useState({open: false, message: ""});
+  const [loading, setLoading] = useState(true);
 
-    this.state = {
-      updateArticleId : "",
-      updateArticleTitle : "",
-      updateArticleBody : "",
-      searchArticleTitle : "",
-      searchArticles: [],
-      snackMessage: "",
-      openSnack: false,
-    }
-  }
+  const dividerOrientation = useMediaQuery('(min-width:600px)');
 
-  handleChangeUpdateArticle(field, value){
-    this.setState({[field]: value});
-  }
-
-  handleChangeSearchArticleTitle(value){
-    this.setState({searchArticleTitle: value});
-  }
-
-  onCloseSnack() {
-    this.setState({openSnack: false});
-  }
-
-  changeArticle(){
-    fetch(SEED_API_URL + "article/" + this.state.updateArticleId, {
-      method: "PUT", 
-      headers: {"Content-Type": "application/json; charset=utf-8"},
-      body: JSON.stringify({title: this.state.updateArticleTitle, body: this.state.updateArticleBody})
+  useEffect(()=>{
+    fetch(SEED_API_URL + "getArticle", {
+      method: "GET", 
+      headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((res)=>{
-      console.log(res);
       if(res.status === 200){
-        this.setState({openSnack: true, snackMessage: "Success"});
+        res.json().then((articles)=>{
+          setArticles(articles);
+          setLoading(false);
+        }).catch((e)=>{
+          console.log(e);
+          setLoading(false);
+        });
       } else {
-        this.setState({openSnack: true, snackMessage: "Error"});
+        setArticles([]);
+        setLoading(false);
       }
     }).catch((e)=>{
       console.log(e);
-      this.setState({openSnack: true, snackMessage: "Error"});
+      setLoading(false);
+    });
+  }, []);
+
+  const onCloseSnack = () => {
+    setSnackbar({open: false, message: ""});
+  }
+
+  const changeArticle = () => {
+    fetch(SEED_API_URL + "article/" + updateArticleId, {
+      method: "PUT", 
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+      body: JSON.stringify({title: updateArticleTitle, body: updateArticleBody})
+    }).then((res)=>{
+      console.log(res);
+      if(res.status === 200){
+        setSnackbar({open: true, message: "Success"});
+      } else {
+        setSnackbar({open: true, message: "Error"});
+      }
+    }).catch((e)=>{
+      console.log(e);
+      setSnackbar({open: true, message: "Success"});
     });
   }
 
-  createRandomArticles(){
+  const createRandomArticles = () => {
+    setLoading(true);
     fetch(SEED_API_URL + "articles/random", {
       method: "POST", 
       headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((resp)=>{
       resp.json().then((body)=>{
         if(resp.status === 201){
-          this.setState({searchArticles: body, openSnack: true, snackMessage: "Success"});
+          setArticles( (prvArticles) => [...prvArticles, ...body]);
+          setSnackbar({open: true, message: "Success"});
+          setLoading(false);
         } else{
           console.log(body);
-          this.setState({openSnack: true, snackMessage: "Error"});
+          setSnackbar({open: true, message: "Error"});
+          setLoading(false);
         }
       }).catch((e)=>{
         console.log(e);
-        this.setState({openSnack: true, snackMessage: "Error"});
+        setSnackbar({open: true, message: "Error"});
+        setLoading(false);
       });
     }).catch((e)=>{
-      console.log(e);
-      this.setState({openSnack: true, snackMessage: "Error"});
+      console.log(e);          
+      setSnackbar({open: true, message: "Error"});
+      setLoading(false);
     });
   }
 
-  deleteAll(){
+  const deleteAll = () => {
+    setLoading(true);
     fetch(SEED_API_URL + "articles/all", {
       method: "DELETE", 
       headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((res)=>{
       console.log(res);
-      this.setState({searchArticles: [], openSnack: true, snackMessage: "Success"});
+      setArticles([]);
+      setLoading(false);
+      setSnackbar({open: true, message: "Success"})
     }).catch((e)=>{
       console.log(e);
-      this.setState({openSnack: true, snackMessage: "Error"});
+      setLoading(false);
+      setSnackbar({open: true, message: "Error"})
     });
   }
 
-  searchArticle(){
-    fetch(SEED_API_URL + "getArticle?title=" + this.state.searchArticleTitle, {
+  const searchArticle = () => {
+    setLoading(true);
+    fetch(SEED_API_URL + "getArticle?title=" + searchArticleTitle, {
       method: "GET", 
       headers: {"Content-Type": "application/json; charset=utf-8"}
     }).then((res)=>{
       if(res.status === 200){
         res.json().then((articles)=>{
-          this.setState({searchArticles: articles, openSnack: true, snackMessage: "Success"});
+          setArticles(articles);
+          setLoading(false);
+          setSnackbar({open: true, message: "Success"});
         }).catch((e)=>{
           console.log(e);
-          this.setState({openSnack: true, snackMessage: "Error"});
+          setLoading(false);
+          setSnackbar({open: true, message: "Error"});
         });
       } else {
-        this.setState({searchArticles: [], openSnack: true, snackMessage: "Not found"});
+        setLoading(false);
+        setSnackbar({open: true, message: "Not found"});
+        setArticles([]);
       }
     }).catch((e)=>{
       console.log(e);
-      this.setState({openSnack: true, snackMessage: "Error"});
+      setLoading(false);
+      setSnackbar({open: true, message: "Error"});
     });
   }
 
-  componentDidMount(){
-    this.changeStateFn = this.setState.bind(this);
-    window.addEventListener("resize", this.changeStateFn);
-  }
-
-  componentWillUnmount(){
-    window.removeEventListener("resize", this.changeStateFn);
-  }
-
-  render(){
-    let classes = this.props.classes;
-    return(
-      <div>
-        <Grid container>
-          <Grid id="Article-update" item xs={12} sm={5} style={{textAlign: "center"}}>
-            <Typography variant="h5" style={{marginBottom: "20px", fontWeight: "bold"}}>Update Article</Typography>
-            <div>
-              <TextField
-                label={"Article Id"}
-                InputLabelProps={{classes: {root: classes.textFieldFont}}}
-                value={this.state.updateArticleId}
-                InputProps={{classes: { input: classes.textFieldFont}}}
-                onChange={(evt) => this.handleChangeUpdateArticle("updateArticleId", evt.target.value)}
-                variant="outlined"
-                className={classes.textField}
-                size="small"
-              />
-            </div>
-            <div>
-              <TextField
-                label={"Title"}
-                InputLabelProps={{classes: {root: classes.textFieldFont}}}
-                value={this.state.updateArticleTitle}
-                InputProps={{classes: { input: classes.textFieldFont}}}
-                onChange={(evt) => this.handleChangeUpdateArticle("updateArticleTitle", evt.target.value)}
-                variant="outlined"
-                className={classes.textField}
-                size="small"
-              />
-            </div>
-            <div>
-              <TextField
-                label={"Body"}
-                InputLabelProps={{classes: {root: classes.textFieldFont}}}
-                value={this.state.updateArticleBody}
-                InputProps={{classes: { input: classes.textFieldFont}}}
-                onChange={(evt) => this.handleChangeUpdateArticle("updateArticleBody", evt.target.value)}
-                variant="outlined"
-                className={classes.textField}
-                size="small"
-              />
-            </div>
-            <Button 
-              className={[classes.button, classes.yellowButton].join(" ")}
+  return(
+    <div>
+      <Grid container>
+        <Grid id="Article-update" item xs={12} sm={5} style={{textAlign: "center"}}>
+          <Typography variant="h5" style={{marginBottom: "20px", fontWeight: "bold"}}>Update Article</Typography>
+          <div>
+            <TextField
+              label={"Article Id"}
+              InputLabelProps={{classes: {root: props.classes.textFieldFont}}}
+              value={updateArticleId}
+              InputProps={{classes: { input: props.classes.textFieldFont}}}
+              onChange={(evt) => setUpdateArticleId(evt.target.value)}
+              variant="outlined"
+              className={props.classes.textField}
               size="small"
-              onClick={this.changeArticle.bind(this)}
-            >
-              Update Article
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <Divider orientation={window.innerWidth >= 600 ? "vertical" : "horizontal"} 
-            className={window.innerWidth >= 600 ? classes.verticalDivider : classes.horizontalDivider}/>
-          </Grid>
-          <Grid item xs={12} sm={5} style={{textAlign: "center"}} id="Article-menu">
-            <div>
-              <Button 
-                className={[classes.button, classes.blueButton].join(" ")} 
-                size="small"
-                onClick={this.createRandomArticles.bind(this)}
-              >
-                Create Random Articles &amp; Authors
-              </Button>
-            </div>
-            <div>
-              <Button 
-                className={[classes.button, classes.redButton].join(" ")} 
-                size="small"
-                onClick={this.deleteAll.bind(this)}
-              >
-                Delete All Articles &amp; Authors
-              </Button>
-            </div>
-            <div>
-              <TextField
-                label={"Search by Article Title..."}
-                InputLabelProps={{classes: {root: classes.textFieldFont}}}
-                value={this.state.searchArticleTitle}
-                InputProps={{classes: { input: classes.textFieldFont}}}
-                onChange={(evt) => this.handleChangeSearchArticleTitle(evt.target.value)}
-                variant="outlined"
-                className={classes.textField}
-                size="small"
-              />
-            </div>
-            <Button 
-              className={[classes.button, classes.greenButton].join(" ")} 
+            />
+          </div>
+          <div>
+            <TextField
+              label={"Title"}
+              InputLabelProps={{classes: {root: props.classes.textFieldFont}}}
+              value={updateArticleTitle}
+              InputProps={{classes: { input: props.classes.textFieldFont}}}
+              onChange={(evt) => setUpdateArticleTitle(evt.target.value)}
+              variant="outlined"
+              className={props.classes.textField}
               size="small"
-              onClick={this.searchArticle.bind(this)}
-            >
-              Search
-            </Button>
-          </Grid>
+            />
+          </div>
+          <div>
+            <TextField
+              label={"Body"}
+              InputLabelProps={{classes: {root: props.classes.textFieldFont}}}
+              value={updateArticleBody}
+              InputProps={{classes: { input: props.classes.textFieldFont}}}
+              onChange={(evt) => setUpdateArticleBody(evt.target.value)}
+              variant="outlined"
+              className={props.classes.textField}
+              size="small"
+            />
+          </div>
+          <Button 
+            className={[props.classes.button, props.classes.yellowButton].join(" ")}
+            size="small"
+            onClick={changeArticle}
+          >
+            Update Article
+          </Button>
         </Grid>
-        <Divider className={classes.horizontalDivider}/>
-        <div id="Article-search">
-          <Typography style={{textAlign: "center", fontWeight: "bold"}} variant="h5">Search Results</Typography>
-          { this.state.searchArticles && this.state.searchArticles.length > 0 ?
+        <Grid item xs={12} sm={2}>
+          <Divider orientation={dividerOrientation ? "vertical" : "horizontal"} 
+          className={dividerOrientation ? props.classes.verticalDivider : props.classes.horizontalDivider}/>
+        </Grid>
+        <Grid item xs={12} sm={5} style={{textAlign: "center"}} id="Article-menu">
+          <div>
+            <Button 
+              className={[props.classes.button, props.classes.blueButton].join(" ")} 
+              size="small"
+              onClick={createRandomArticles.bind(this)}
+            >
+              Create Random Articles &amp; Authors
+            </Button>
+          </div>
+          <div>
+            <Button 
+              className={[props.classes.button, props.classes.redButton].join(" ")} 
+              size="small"
+              onClick={deleteAll.bind(this)}
+            >
+              Delete All Articles &amp; Authors
+            </Button>
+          </div>
+          <div>
+            <TextField
+              label={"Search by Article Title..."}
+              InputLabelProps={{classes: {root: props.classes.textFieldFont}}}
+              value={searchArticleTitle}
+              InputProps={{classes: { input: props.classes.textFieldFont}}}
+              onChange={(evt) => setSearchArticleTitle(evt.target.value)}
+              variant="outlined"
+              className={props.classes.textField}
+              size="small"
+            />
+          </div>
+          <Button 
+            className={[props.classes.button, props.classes.greenButton].join(" ")} 
+            size="small"
+            onClick={searchArticle.bind(this)}
+          >
+            Search
+          </Button>
+        </Grid>
+      </Grid>
+      <Divider className={props.classes.horizontalDivider}/>
+      <div id="Article-search" style={{textAlign: "center"}}>
+        <Typography style={{textAlign: "center", fontWeight: "bold"}} variant="h5">Search Results</Typography>
+        { loading ? 
+          <CircularProgress className={props.classes.loading}/>
+        :
+          articles && articles.length > 0 ?
             <Grid container>
               { 
-                this.state.searchArticles.map((article, i)=>{
+                articles.map((article, i)=>{
                   return(
                     <Grid item xs={12} sm={6} key={i}>
                       <Article title={article.title} body={article.body}></Article>
@@ -282,17 +308,17 @@ class Home extends Component {
             </Grid>
           :
             ""
-          }
-        </div>
-        <Snackbar
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          open={this.state.openSnack}
-          onClose={this.onCloseSnack.bind(this)}
-          autoHideDuration={500}
-          message={<span>{this.state.snackMessage}</span>}
-        />
+        }
       </div>
-    );
-  }
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackbar.open}
+        onClose={onCloseSnack.bind(this)}
+        autoHideDuration={500}
+        message={<span>{snackbar.message}</span>}
+      />
+    </div>
+  );
+}
 
-} export default withStyles(styleSheet, { name: 'Home' })(Home);
+export default withStyles(styleSheet, { name: 'Home' })(Home);
