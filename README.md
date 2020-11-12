@@ -2,7 +2,7 @@
 
 ## Anotações
 
-Irei anotar aqui tudo do curso de (React.js)[https://www.udemy.com/course/react-the-complete-guide-incl-redux/] que eu não sabia, não lembrava ou achei interessante. Também fica aqui como um repositório público, caso alguém tenha algum interesse vou anotar algumas coisas básica também. 
+Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-the-complete-guide-incl-redux/) que eu não sabia, não lembrava ou achei interessante. Também fica aqui como um repositório público, caso alguém tenha algum interesse vou anotar algumas coisas básica também. 
 
 ## React
 
@@ -60,7 +60,7 @@ var x = [1,2,3]
 var y = [...,3]
 console.log(y)
 - - - - - - - -
-Resultado:[1,2,3,4]
+[1,2,3,4]
 ```
 
 Ex. 2:
@@ -70,7 +70,7 @@ var x = {name: 'Lele', age: 21}
 var y = {...x, age: 22}
 console.log(y)
 - - - - - - - -
-Resultado: {name: 'Lele', age: 22}
+{name: 'Lele', age: 22}
 ```
 
 ### Rest
@@ -89,16 +89,24 @@ Destructuring
 
 - Desestruturação de arrays ou objetos
 
+Ex. 1:
+```
 [a, , c] = ['Lele, 'Lucas', 'Lucio']
 console.log('a:' + a)
-console.log('c: ' +c)
+console.log('c: ' + c)
 - - - - - - - -
 a: Lele
 c: Lucio
+```
 
+Ex.2:
+
+```
 {name} = {name 'Lele', age: 21}
-
-
+console.log(name)
+- - - - - - - -
+Lele
+```
 
 ### Webpack:
 
