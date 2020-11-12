@@ -34,10 +34,12 @@ Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-
 
 - **Não esquecer os tipos de uma linguagem** - Matéria de LP
 
-- Primitivos: Em geral cópia por valor
-- Compostos: Em geral cópia por referência
+  - Primitivos: Em geral cópia por valor
+  - Compostos: Em geral cópia por referência
 
-**É uma boa pratica em React não alterar o estado diretamente**
+É uma boa pratica em React não alterar o estado diretamente - [Ver Spread operation](#spread)
+
+
 
 
 
@@ -50,9 +52,11 @@ Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-
 const myMethod = () => {
 }
 
-#### Spread
+# Spread
 
-Causa um efeito de join dentro de arrays ou objetos pela utilização de 3 pontos
+#### Spread (#spread)
+
+Causa um efeito de join dentro de arrays ou objetos pela utilização de 3 pontos. Pode ser usado para copiar um array ou objeto
 
 Ex. 1:
 ```
