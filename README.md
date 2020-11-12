@@ -1,32 +1,32 @@
-# dartware-avalicao-tecnica
+dartware-avalicao-tecnica
 
-## Anotações
+# Anotações
 
 Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-the-complete-guide-incl-redux/) que eu não sabia, não lembrava ou achei interessante. Também fica aqui como um repositório público, caso alguém tenha algum interesse vou anotar algumas coisas básica também. 
 
-## React
+# React
 
 "A JavaScript Library for building User Intefaces"
 
 - Baseando em Componentes, assim é mais fácil de modificar e reutilizar.
 
-### React DOM
+## React DOM
 
 - Renderiza um Componente React para o verdadeiro DOM. **Obs: Antes disso acontecer o Componente é transformado de JSX para JavaScript**
 
 - ReactDOM.render(<Component/>, document.getElementById('root'))
 
-### Why React ?
+## Why React ?
 
 - É mais fácil de lidar com o UI State que o JavaScript puro (document.querySelector) ou JQuery.
 
 - Por ser mais fácil o desenvolvedor pode focar mais na lógica do negócio.
 
-### Single Page Applications X Multi Page Applications
+## Single Page Applications X Multi Page Applications
 
 ............
 
-### Next Generation JavaScript (ES6 e ES7)
+## Next Generation JavaScript (ES6 e ES7)
 
 - Variáveis: var, let, const
 - É preferível usar let que var porque ela sempre existe somente no menor escopo. **Obs.: Ao criar um let dentro de uma condição, esss não poderá ser acessado fora dela**
@@ -43,7 +43,7 @@ Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-
 
 
 
-#### ES7
+## ES7
 
 ...
 
@@ -52,9 +52,8 @@ Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-
 const myMethod = () => {
 }
 
-# Spread
 
-#### Spread (#spread)
+### Spread (#spread)
 
 Causa um efeito de join dentro de arrays ou objetos pela utilização de 3 pontos. Pode ser usado para copiar um array ou objeto
 
@@ -112,10 +111,10 @@ console.log(name)
 Lele
 ```
 
-### Webpack:
+## Webpack:
 
 Quando estamos desenvolvendo uma aplicação queremos que ela seja modular com cada método e classe tendo um foco. Assim é mais fácil de entender, encontrar bugs e refatorar caso seja necessário. O problema disso é que em geral, os browsers não aceitam arquivos separados, por isso é necessário de um bundle (empacotador) para lidar com esses arquivos.
 
-### Babel:
+## Babel:
 
 Transpila o código em React.js e o JXS para javascript puro, assim qualquer navegador consegue executar a aplicação em React. Além disso, muitos browsers não aceitam ECMA Script 6 e 7, por isso o código é transformado para o ECMA Script 5.
