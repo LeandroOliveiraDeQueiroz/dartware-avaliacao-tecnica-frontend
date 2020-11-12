@@ -1,6 +1,5 @@
 dartware-avalicao-tecnica
-
-# Anotações
+=============================
 
 Irei anotar aqui tudo do curso de [React.js](https://www.udemy.com/course/react-the-complete-guide-incl-redux/) que eu não sabia, não lembrava ou achei interessante. Também fica aqui como um repositório público, caso alguém tenha algum interesse vou anotar algumas coisas básica também. 
 
