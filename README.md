@@ -18,30 +18,40 @@ Com o Hooks não é necessário utilizar Class-based Componentes, porque ele sub
 
 - Entra na versão 16.8 do React.
 
-- Uma diferença do Hook para o Class-based Component é que o Hook pode guardar outras coisas além de um objeto.
+### Regras sobre Hooks
+
+- Quando são feitas duas ou mais atualizações de estados em uma função síncrona o React junta e executa elas ao mesmo tempo, assim evitando renderizações desnecessárias
+
+- Só é permitido utilizar Hooks na raiz(root) do Functional componente ou do Hook. Não é possível fazer isso dentro de uma outra função ou de um condição(if, else).
+
 
 -----------------------------------
 # Há coisas a mudar aqui para baixo principalmente no useState
+
+Obs.: Os Reacts Events são como os events do JavaScript, porém são guardados em objetos pelo React, que os manipula e reutiliza. 
+
+***Pergunta: Como seria representado o ComponetDidWillUnmount method com hooks?***
 
 ### useState
 
 ```
 [value, setValue] = useState(initialValue);
 ```
+- O argumento recebe o valor inicial do estado. Pode ser: objeto, array, string, int, etc.
 
-Uma diferença do Hook para o Class-based Component é que o Hook pode guardar outras coisas além de um objeto.
+- Retorna um array de duas posições:
+  - A primeira posição é valor que está guardado nesse estado.
+  - A segunda posição é uma função para mudar o estado. Aceita um valor ou uma função anônima, a qual recebe como argumento o estado anterior. **Ob.: Caso aconteça várias alterações consecutivas muito rápidas é possível que a primeira posição não tenha o valor atual**
 
+#### Diferenças entre useState e this.state
 
-Obs.: Os Reacts Events são como os events do JavaScript, porém são guardados em objetos pelo React, que os manipula e reutiliza. 
+- O useState pode guardar outras coisa além de um objeto.
 
+- O useState sempre altera o estado por completo. 
 
-Só é permitido utilizar Hooks na raiz do componente(root). Não é possível fazer isso dentro de uma outra função ou de um condição(if).
+- Pode-se criar quantos estados forem necessários.
 
-
-Quando são feitas duas ou mais atualizações de estados em uma função síncrona o React junta e executa elas ao mesmo tempo, assim evitando renderizações desnecessárias
-
-Como seria representado o ComponetDidWillUnmount method com hooks?
-
+- Por boa prática duas váriaveis devem ser criadas no mesmo estados se são correlacionadas(mudam juntas).
 
 ### useEfect
 
