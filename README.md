@@ -117,3 +117,17 @@ Quando estamos desenvolvendo uma aplicação queremos que ela seja modular com c
 ## Babel:
 
 Transpila o código em React.js e o JXS para javascript puro, assim qualquer navegador consegue executar a aplicação em React. Além disso, muitos browsers não aceitam ECMA Script 6 e 7, por isso o código é transformado para o ECMA Script 5.
+
+## GraphQL:
+
+Query language for API's like SQL is for Databases. Facebook created to speed up theis mobile apps that made alot of calls to the server and avoid overfetching and underfetching. RestFull API.
+
+Advantages:
+- Client can control which data he want from the server.
+- Get many resourses in a single resquest. No need to made two request for two routes.
+- Describe schema that describe the API. So is easy to know what the API can proved. Like a clean contract.
+
+Is possible open a web interface in localhost:API_PORT/graph-ql/
+
+Create a project with Apollo server in GraphQL
+
