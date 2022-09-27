@@ -135,6 +135,31 @@ Under the hood Apollo uses express but is possible use another packages too. Use
 
 ![image](https://user-images.githubusercontent.com/36925470/192650154-44a31d00-63a7-468b-99d0-7b144e87dd78.png)
 
+easterEgg: Apollo always do POST's for send all the required needs: selected fields like a JSON
 
 Apollo sandbox make a API "documentation" based on the graphQL types
+
+Basic Scalar(leaves of a query - the most simple object part of GraphQL):
+Int
+Float
+Boolean
+ID
+
+Custom scalar:
+Date
+Cash
+
+![image](https://user-images.githubusercontent.com/36925470/192653565-084d251a-fd49-433f-9354-c334b98681a4.png)
+
+
+Query, Mutation and Custom Types:
+
+Query: Describe all the queries that is possible make to the server
+Mutation: Describe all the mutations ('Changes in the database')
+Custom types: Can be created to describe a object. Is created based on GraphQL Scalars and anothers Custom Types.
+
+'!': define a atribute obrigatory 
+'[]': define a array of a Custom Type or a Scalar
+
+GraphQL make like a contratct of the API and the FrontEnd. For exempla: f the API don't send a required field will cause a error. And the Frontend can't get a not specidied field.
 
