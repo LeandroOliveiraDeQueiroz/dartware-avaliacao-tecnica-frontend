@@ -131,3 +131,8 @@ Is possible open a web interface in localhost:API_PORT/graph-ql/
 
 Create a project with Apollo server in GraphQL
 
+Under the hood Apollo uses express but is possible use another packages too. Use apollo-server-express attach Apollo on Express server. The difference is the second way expose the Express enabling make additional configutarions
+
+![image](https://user-images.githubusercontent.com/36925470/192650154-44a31d00-63a7-468b-99d0-7b144e87dd78.png)
+
+
