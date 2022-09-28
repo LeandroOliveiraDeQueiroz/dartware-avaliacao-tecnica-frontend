@@ -120,7 +120,8 @@ Transpila o código em React.js e o JXS para javascript puro, assim qualquer nav
 
 ## GraphQL:
 
-Query language for API's like SQL is for Databases. Facebook created to speed up theis mobile apps that made alot of calls to the server and avoid overfetching and underfetching. RestFull API.
+
+Query language for API's like SQL is for Databases. Facebook created to speed up theis mobile apps that made alot of calls to the server and avoid overfetching and underfetching. RestFull API (follow Rest constraints).
 
 Advantages:
 - Client can control which data he want from the server.
@@ -137,7 +138,7 @@ Under the hood Apollo uses express but is possible use another packages too. Use
 
 easterEgg: Apollo always do POST's for send all the required needs: selected fields like a JSON
 
-Apollo sandbox make a API "documentation" based on the graphQL types
+Apollo sandbox make a API a Documentation based on the graphQL types
 
 Basic Scalar(leaves of a query - the most simple object part of GraphQL):
 Int
@@ -151,6 +152,7 @@ Cash
 
 ![image](https://user-images.githubusercontent.com/36925470/192653565-084d251a-fd49-433f-9354-c334b98681a4.png)
 
+The resolvers can be async with we want.
 
 Query, Mutation and Custom Types:
 
@@ -158,8 +160,29 @@ Query: Describe all the queries that is possible make to the server
 Mutation: Describe all the mutations ('Changes in the database')
 Custom types: Can be created to describe a object. Is created based on GraphQL Scalars and anothers Custom Types.
 
-'!': define a atribute obrigatory 
+'!': define a atribute mandatory 
 '[]': define a array of a Custom Type or a Scalar
 
-GraphQL make like a contratct of the API and the FrontEnd. For exempla: f the API don't send a required field will cause a error. And the Frontend can't get a not specidied field.
+# Field Selection
+
+GraphQL make like a contratct of the API with possible the FrontEnd's. For example: if the API don't send a required field will cause a error. And the Frontend can't get a not specidied field.
+The mandatory signal obrigat the Server provide a field but the FrontEnd don't need to get that field if don't need
+
+# Associate types - Creating API for database relationship
+
+Create a another type and make the relationship. Of course the backend must to get the other table in the database
+
+```
+type Company {
+  id: ID!
+}
+
+type Job {
+ id: ID!
+ title: String!
+ company: Company
+}
+```
+
+If we create a resolver with the name Company, if we query a list of Jobs of length N, the method Company will be called N times which one reciving a job and expecting the response of the type job.
 
