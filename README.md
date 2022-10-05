@@ -186,3 +186,38 @@ type Job {
 
 If we create a resolver with the name Company, if we query a list of Jobs of length N, the method Company will be called N times which one reciving a job and expecting the response of the type job.
 
+We GraphQL is possible navigate throw the objects. If there is a resolver for that field the frontend can resquest that field, if the a inner field of the first field have a resolver that can be queried too.
+
+Company {
+  name: String
+  jobs: [Job]
+
+}
+
+Job {
+  name: String
+  company: Company
+}
+
+Query - front:
+
+Job (id: $id){
+  name
+  company {
+    name
+    jobs {
+      name
+    }
+  }
+}
+
+With that code is possible to know all the Jobs that are in the same company of the queried job($id). Facebook can uses to find friends of your friends and suggest for you.
+
+Note: async functions are a promise(return new Promise())
+
+Input is a type to define the fields to be the Query or Mutation parameters,
+Type is a output of a Query or a Mutation
+
+In GraphQL is always deliveried what we queried. So if we queried a mutation createAJob, the server will response with the results inside of the object createAJob. In the end, createAJob return a job, therefore "make sense" the results outcome in a object job. For that situtations GraphQL allow create a allias for a resquest.
+
+
