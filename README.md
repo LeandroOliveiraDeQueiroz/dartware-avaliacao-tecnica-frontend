@@ -224,9 +224,21 @@ In GraphQL is always deliveried what we queried. So if we queried a mutation cre
 
 GraphQL allow get data from the real request (POST) by the param context. That param expected a function that recieve the req (resquest) and return the data that need to by pass for the resolvers. Example: JWT (JSON Web Token) in attach in the request by the browser, can be parsed and send just the id for the resolver
 
+### Apollo Cliente
+
 **Apollo Client**
 
 In general is the same of use the GraphQL resquest modules. The only difference is that Apollo cliente can cache the results of the resquest. Therefore if Apollo Cliente already a data of some resquest, it can access the cache and don't make the fecth.
+
+**Cache**
+
+Apollo Client allow cache the graphQL objects in objects format, therefore if the next query resquest for the data a of a Job with id x, if this object is on the cache Apollo will return the cached object and won't make a resquest for the server.
+
+****Warming****
+If a document is cached by the user 1 and be updated by other user, when user try to query this document will recieve with the wrong value, the cached one.
+
+Situation make sense use:
+ - When want to create a document and redirect for the a page that show it. Update the cache in the creation component writting the job, read in the other and delete the cache
 
 **Apollo React Hooks**
 
