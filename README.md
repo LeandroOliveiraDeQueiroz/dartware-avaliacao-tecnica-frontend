@@ -238,8 +238,23 @@ Apollo Client allow cache the graphQL objects in objects format, therefore if th
 If a document is cached by the user 1 and be updated by other user, when user try to query this document will recieve with the wrong value, the cached one.
 
 Situation make sense use:
- - When want to create a document and redirect for the a page that show it. Update the cache in the creation component writting the job, read in the other and delete the cache
+ - When want to create a document and redirect for the a page that show it. Update the cache in the creation component writting the job, the other component just need make the normal GraphQL resquest. Maybe delete the cache in this can be good
+
+**Fragment**
+Part of a object to be reused in a lot of place of the code. Nowadays we are using strings to make it, but is better (code pattern) use the fragment
 
 **Apollo React Hooks**
+
+Make queries, mutations by Hooks to make more easy make the requests
+
+Apollo Provider: Provide a Apllo client to the App, therefore use the hooks inside of all components by props
+
+useQuey: 
+- The return work like a state. If change the value re-render the JSX
+- Params: query, variables, options (fetchPolicy)
+- Return data, loading and error
+
+
+
 
 
