@@ -220,4 +220,14 @@ Type is a output of a Query or a Mutation
 
 In GraphQL is always deliveried what we queried. So if we queried a mutation createAJob, the server will response with the results inside of the object createAJob. In the end, createAJob return a job, therefore "make sense" the results outcome in a object job. For that situtations GraphQL allow create a allias for a resquest.
 
+**Authetication**
+
+GraphQL allow get data from the real request (POST) by the param context. That param expected a function that recieve the req (resquest) and return the data that need to by pass for the resolvers. Example: JWT (JSON Web Token) in attach in the request by the browser, can be parsed and send just the id for the resolver
+
+**Apollo Client**
+
+In general is the same of use the GraphQL resquest modules. The only difference is that Apollo cliente can cache the results of the resquest. Therefore if Apollo Cliente already a data of some resquest, it can access the cache and don't make the fecth.
+
+**Apollo React Hooks**
+
 
