@@ -249,10 +249,19 @@ Make queries, mutations by Hooks to make more easy make the requests
 
 Apollo Provider: Provide a Apllo client to the App, therefore use the hooks inside of all components by props
 
+**Apollo Hooks**
+
 useQuey: 
 - The return work like a state. If change the value re-render the JSX
 - Params: query, variables, options (fetchPolicy)
 - Return data, loading and error
+
+useMutation(GraphQL_query):
+- Return a array: [mutate, result]
+- The mutate make the resquest. Is  async function (Promise). Return a result equal the useMutation result.
+- The result is formed by: {data, loading, error}. 
+- The result of the hook is a state, therefore when some intern propertie changes the component can be re-render if need. Example: Pass loading for show a loading spinner and disable the submit button. When submit the loading will change to true and re-rendering the page.
+- The result of the mutate function is a variable for be used inside a method. Example: After submit the resquest in the same method is possible handle with erros (Snackbar, feedback) and successes (feedback, redirect).
 
 
 
