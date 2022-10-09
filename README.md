@@ -186,7 +186,7 @@ type Job {
 }
 ```
 
-If we create a resolver with the name Company, if we query a list of Jobs of length N, the method Company will be called N times which one reciving a job and expecting the response of the type job.
+If we create a resolver with the name Company, if we query a list of Jobs of length N, the method Company will be called N times which one reciving a job and expecting the response of the type job. Therefore the database will be called 1 time to the Jobs and N for the Companies (n+1). That is the N + 1 problem.(#n+1)
 
 We GraphQL is possible navigate throw the objects. If there is a resolver for that field the frontend can resquest that field, if the a inner field of the first field have a resolver that can be queried too.
 ```
@@ -305,6 +305,15 @@ useMutation(GraphQL_query):
 - The result is formed by: {data, loading, error}. 
 - The result of the hook is a state, therefore when some intern propertie changes the component can be re-render if need. Example: Pass loading for show a loading spinner and disable the submit button. When submit the loading will change to true and re-rendering the page.
 - The result of the mutate function is a variable for be used inside a method. Example: After submit the resquest in the same method is possible handle with erros (Snackbar, feedback) and successes (feedback, redirect).
+
+
+#### Data loaders
+
+- Created by a Facebook Enginier and came back to have relevance because of GraphQL to resolve the N+1 problem. [Ver N+1 problem](#n+1). The data loaders keep operations for create batchs to the database. Also can cache the database queries results. The Data Loader is creating passing a database query and instead of call the database in the resolver, it's call the loader. The loader will make a batch for all the equal queries and call the database just once. Example:
+-
+Instead of call a select id, name where id === "x" N times will use select id, name where id in ["x", "y","z"]
+
+
 
 
 
