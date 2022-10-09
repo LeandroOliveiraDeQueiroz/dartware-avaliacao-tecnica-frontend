@@ -168,6 +168,8 @@ Custom types: Can be created to describe a object. Is created based on GraphQL S
 GraphQL make like a contratct of the API with possible the FrontEnd's. For example: if the API don't send a required field will cause a error. And the Frontend can't get a not specidied field.
 The mandatory signal obrigat the Server provide a field but the FrontEnd don't need to get that field if don't need
 
+
+
 # Associate types - Creating API for database relationship
 
 Create a another type and make the relationship. Of course the backend must to get the other table in the database
@@ -187,31 +189,72 @@ type Job {
 If we create a resolver with the name Company, if we query a list of Jobs of length N, the method Company will be called N times which one reciving a job and expecting the response of the type job.
 
 We GraphQL is possible navigate throw the objects. If there is a resolver for that field the frontend can resquest that field, if the a inner field of the first field have a resolver that can be queried too.
-
+```
+Query {
+  job(id:ID!): Job
+}
 Company {
   name: String
+  headquarters: String
   jobs: [Job]
-
+  
 }
 
 Job {
   name: String
+  sallary: Float
   company: Company
 }
-
+```
 Query - front:
-
-Job (id: $id){
-  name
-  company {
+```
+query ($id: ID!): {
+  Job (id: $id){
     name
-    jobs {
+    company {
       name
+      headquarters
+      jobs {
+        name
+        sallary
+      }
     }
   }
 }
-
+```
 With that code is possible to know all the Jobs that are in the same company of the queried job($id). Facebook can uses to find friends of your friends and suggest for you.
+
+# Fragment (#fragment)
+
+Part of a object selected to be reused in a lot of places of the code. Nowadays the company is using strings to make it, but is better (code pattern) use the fragment. With it avoid errors to query different fields in differents queries that share some types (associate). That is really important for Apollo Client Cache.
+
+Syntax: fragment "Name" on "Type" { "fields selection" }
+
+```
+const jobDetail = gql`
+  fragment JobDetail on Job {
+    name
+    company {
+      name
+      headquarters
+      jobs {
+        name
+        sallary
+      }
+    }
+  }
+`
+
+gql`
+  query ($id: ID!): {
+    Job (id: $id){
+      ...JobDetail
+    }
+  }, 
+  ${jobDetail}
+`
+```
+----
 
 Note: async functions are a promise(return new Promise())
 
@@ -224,13 +267,13 @@ In GraphQL is always deliveried what we queried. So if we queried a mutation cre
 
 GraphQL allow get data from the real request (POST) by the param context. That param expected a function that recieve the req (resquest) and return the data that need to by pass for the resolvers. Example: JWT (JSON Web Token) in attach in the request by the browser, can be parsed and send just the id for the resolver
 
-### Apollo Cliente
+# Apollo Client
 
 **Apollo Client**
 
 In general is the same of use the GraphQL resquest modules. The only difference is that Apollo cliente can cache the results of the resquest. Therefore if Apollo Cliente already a data of some resquest, it can access the cache and don't make the fecth.
 
-**Cache**
+### **Cache**
 
 Apollo Client allow cache the graphQL objects in objects format, therefore if the next query resquest for the data a of a Job with id x, if this object is on the cache Apollo will return the cached object and won't make a resquest for the server.
 
