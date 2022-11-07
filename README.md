@@ -118,7 +118,7 @@ Quando estamos desenvolvendo uma aplicação queremos que ela seja modular com c
 
 Transpila o código em React.js e o JXS para javascript puro, assim qualquer navegador consegue executar a aplicação em React. Além disso, muitos browsers não aceitam ECMA Script 6 e 7, por isso o código é transformado para o ECMA Script 5.
 
-## GraphQL:
+# GraphQL:
 
 
 Query language for API's like SQL is for Databases. Facebook created to speed up theis mobile apps that made alot of calls to the server and avoid overfetching and underfetching. RestFull API (follow Rest constraints).
@@ -153,14 +153,14 @@ Custom types: Can be created to describe a object. Is created based on GraphQL S
 '!': define a atribute mandatory 
 '[]': define a array of a Custom Type or a Scalar
 
-# Field Selection
+## Field Selection
 
 GraphQL make like a contratct of the API with possible the FrontEnd's. For example: if the API don't send a required field will cause a error. And the Frontend can't get a not specidied field.
 The mandatory signal obrigat the Server provide a field but the FrontEnd don't need to get that field if don't need
 
 
 
-# Associate types - Creating API for database relationship
+## Associate types - Creating API for database relationship
 
 Create a another type and make the relationship. Of course the backend must to get the other table in the database
 
@@ -214,7 +214,7 @@ query ($id: ID!): {
 ```
 With that code is possible to know all the Jobs that are in the same company of the queried job($id). Facebook can uses to find friends of your friends and suggest for you.
 
-# Fragment (#fragment)
+## Fragment (#fragment)
 
 Part of a object selected to be reused in a lot of places of the code. Nowadays the company is using strings to make it, but is better (code pattern) use the fragment. With it avoid errors to query different fields in differents queries that share some types (associate). That is really important for Apollo Client Cache.
 
@@ -273,7 +273,7 @@ easterEgg: Apollo always do POST's for send all the required needs: selected fie
 
 Apollo sandbox make a API a Documentation based on the graphQL types
 
-### **Cache**
+## **Cache**
 
 Apollo Client allow cache the graphQL objects in objects format, therefore if the next query resquest for the data a of a Job with id x, if this object is on the cache Apollo will return the cached object and won't make a resquest for the server.
 
@@ -307,7 +307,7 @@ useMutation(GraphQL_query):
 - The result of the mutate function is a variable for be used inside a method. Example: After submit the resquest in the same method is possible handle with erros (Snackbar, feedback) and successes (feedback, redirect).
 
 
-#### Data loaders
+### Data loaders
 
 - Created by a Facebook Enginier and came back to have relevance because of GraphQL to resolve the N+1 problem. [Ver N+1 problem](#n+1). The data loaders keep operations for create batchs to the database. Also can cache the database queries results. The Data Loader is creating passing a database query and instead of call the database in the resolver, it's call the loader. The loader will make a batch for all the equal queries and call the database just once. Example:
 -
