@@ -130,16 +130,6 @@ Advantages:
 
 Is possible open a web interface in localhost:API_PORT/graph-ql/
 
-Create a project with Apollo server in GraphQL
-
-Under the hood Apollo uses express but is possible use another packages too. Use apollo-server-express attach Apollo(like a middleware) on Express server. The difference is the second way expose the Express enabling make additional configutarions
-
-![image](https://user-images.githubusercontent.com/36925470/192650154-44a31d00-63a7-468b-99d0-7b144e87dd78.png)
-
-easterEgg: Apollo always do POST's for send all the required needs: selected fields like a JSON
-
-Apollo sandbox make a API a Documentation based on the graphQL types
-
 Basic Scalar(leaves of a query - the most simple object part of GraphQL):
 Int
 Float
@@ -272,6 +262,16 @@ GraphQL allow get data from the real request (POST) by the param context. That p
 **Apollo Client**
 
 In general is the same of use the GraphQL resquest modules. The only difference is that Apollo cliente can cache the results of the resquest. Therefore if Apollo Cliente already a data of some resquest, it can access the cache and don't make the fecth.
+
+Create a project with Apollo server in GraphQL
+
+Under the hood Apollo uses express but is possible use another packages too. Use apollo-server-express attach Apollo(like a middleware) on Express server. The difference is the second way expose the Express enabling make additional configutarions
+
+![image](https://user-images.githubusercontent.com/36925470/192650154-44a31d00-63a7-468b-99d0-7b144e87dd78.png)
+
+easterEgg: Apollo always do POST's for send all the required needs: selected fields like a JSON
+
+Apollo sandbox make a API a Documentation based on the graphQL types
 
 ### **Cache**
 
