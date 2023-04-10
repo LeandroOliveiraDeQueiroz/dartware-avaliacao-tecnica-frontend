@@ -126,3 +126,15 @@ Pela porta
 webpack
 
 build -> electron on js files
+
+#Tray
+Tray - config básica:
+
+- image
+- Title
+- ToolTip
+
+usar:
+
+- menu padrão do SO passando os valores e usando os eventos da tray.
+- Criar uma janela na posição do tray. Ao clicar no try fazer toogle. Obs.: dificuldade de calcular posição
