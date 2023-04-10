@@ -119,6 +119,9 @@ Main to renderer
 Receber: ipcRenderer.on
 Mandar mensangem: webContents.send
 
+-----------------
+Declarar o tipo global do preload para conseguir utilizar os metódos do preload pela janela
+
 Rodar Electron + React
 
 Pela porta
